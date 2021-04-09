@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable max-len */
 /**
  * Given a singly linked list of integers l and an integer k,
  * remove all elements from list l that have a value equal to k.
@@ -17,8 +19,21 @@
  * }
  */
 
-function removeKFromList(/* l, k */) {
-  throw new Error('Not implemented');
+function removeKFromList(l, k) {
+  const arrOfNodes = [];
+  let curNode = l;
+  while (curNode) {
+    arrOfNodes.push(curNode);
+    curNode = curNode.next;
+  }
+
+  return arrOfNodes
+    .filter((node) => node.value !== k)
+    .reverse()
+    .reduce((prevNode, currentNode) => {
+      currentNode.next = prevNode;
+      return currentNode;
+    });
 }
 
 module.exports = removeKFromList;
