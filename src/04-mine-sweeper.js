@@ -21,8 +21,36 @@
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new Error('Not implemented');
+function minesweeper(matrix) {
+  const gameField = [];
+
+  matrix.forEach((row, currentRowIndex) => {
+    gameField.push(new Array(row.length));
+    row.forEach((field, currentColumnIndex) => {
+      const topRowIndex = currentRowIndex - 1;
+      const bottomRowIndex = currentRowIndex + 1;
+      const leftColumnIndex = currentColumnIndex - 1;
+      const rightColumnIndex = currentColumnIndex + 1;
+      const arrayOfRowIndexes = [topRowIndex, currentRowIndex, bottomRowIndex];
+      const arrayOfColumnIndexes = [leftColumnIndex, currentColumnIndex, rightColumnIndex];
+
+      const arrayOfMines = arrayOfRowIndexes
+        .map((rowNumber) => arrayOfColumnIndexes
+          .map((columnNumber) => ((
+            rowNumber > -1
+            && rowNumber < matrix.length
+            && columnNumber < matrix[0].length
+            && columnNumber > -1
+            && !(rowNumber === currentRowIndex
+            && columnNumber === currentColumnIndex))
+            ? matrix[rowNumber][columnNumber]
+            : undefined))).flat();
+      const minesAround = arrayOfMines.reduce((acc, neighbour) => (neighbour ? acc + 1 : acc), 0);
+      gameField[currentRowIndex][currentColumnIndex] = minesAround;
+    });
+  });
+
+  return gameField;
 }
 
 module.exports = minesweeper;
